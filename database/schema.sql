@@ -1,0 +1,14 @@
+CREATE TABLE IF NOT EXISTS handover_items (
+  id BIGSERIAL PRIMARY KEY,
+  title VARCHAR(180) NOT NULL,
+  assignee VARCHAR(80),
+  category VARCHAR(40) NOT NULL DEFAULT '申し送り',
+  due_at TIMESTAMP NULL,
+  priority VARCHAR(10) NOT NULL DEFAULT 'MEDIUM' CHECK (priority IN ('HIGH','MEDIUM','LOW')),
+  status VARCHAR(10) NOT NULL DEFAULT 'TODO' CHECK (status IN ('TODO','DOING','DONE')),
+  confirmed BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_handover_status ON handover_items(status);
+CREATE INDEX IF NOT EXISTS idx_handover_due_at ON handover_items(due_at);
