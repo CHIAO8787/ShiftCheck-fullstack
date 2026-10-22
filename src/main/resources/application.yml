@@ -4,7 +4,7 @@ spring:
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/shiftcheck}
     username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:justin8802}
+    password: ${DB_PASSWORD:password}
   jpa:
     hibernate:
       ddl-auto: update
