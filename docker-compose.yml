@@ -1,3 +1,4 @@
+
 services:
   postgres:
     image: postgres:16
@@ -6,12 +7,30 @@ services:
       POSTGRES_DB: shiftcheck
       POSTGRES_USER: shiftcheck
       POSTGRES_PASSWORD: shiftcheck_dev_password
-    ports: ["5432:5432"]
-    volumes: [shiftcheck_pgdata:/var/lib/postgresql/data]
+    ports:
+      - "5432:5432"
+    volumes:
+      - shiftcheck_pgdata:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U shiftcheck -d shiftcheck"]
       interval: 5s
       timeout: 3s
       retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shiftcheck-app
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/shiftcheck
+      SPRING_DATASOURCE_USERNAME: shiftcheck
+      SPRING_DATASOURCE_PASSWORD: shiftcheck_dev_password
+    depends_on:
+      postgres:
+        condition: service_healthy
+
 volumes:
   shiftcheck_pgdata:
